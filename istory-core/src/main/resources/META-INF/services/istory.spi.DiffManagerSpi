@@ -1,0 +1,14 @@
+istory.spi.IntegerDiffManager
+istory.spi.LongDiffManager
+istory.spi.FloatDiffManager
+istory.spi.DoubleDiffManager
+istory.spi.ShortDiffManager
+istory.spi.ByteDiffManager
+istory.spi.SimpleStringDiffManager
+istory.spi.LCSCharSequenceDiffManager
+istory.spi.LCSCollectionDiffManager
+istory.spi.UnsortedSetDiffManager
+istory.spi.BooleanDiffManager
+istory.spi.LCSSortedSetDiffManager
+istory.spi.LCSSortedMapDiffManager
+istory.spi.UnsortedMapDiffManager

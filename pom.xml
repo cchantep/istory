@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>istory</groupId>
+  <artifactId>istory-parent</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <name>iStory</name>
+  <packaging>pom</packaging>
+  <modules>
+    <module>istory-core</module>
+    <module>istory-persistence</module>
+  </modules>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>commons-lang</groupId>
+	<artifactId>commons-lang</artifactId>
+	<version>2.3</version>
+	<type>jar</type>
+      </dependency>
+
+      <dependency>
+	<groupId>commons-collections</groupId>
+	<artifactId>commons-collections</artifactId>
+	<version>3.2</version>
+	<type>jar</type>
+      </dependency>
+
+      <dependency>
+	<groupId>org.hibernate</groupId>
+	<artifactId>hibernate</artifactId>
+	<version>3.2.0.ga</version>
+	<type>jar</type>
+      </dependency>
+
+      <dependency>
+        <groupId>istory</groupId>
+        <artifactId>istory-core</artifactId>
+        <version>1.0-SNAPSHOT</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <scm>
+    <connection>scm:svn:svn://localhost/istory/Trunk</connection>
+    <developerConnection>scm:svn:svn://cchantep@localhost/istory/Trunk</developerConnection>
+  </scm>
+</project>
