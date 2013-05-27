@@ -14,7 +14,7 @@ public class LongDiffTest {
     /**
      */
     public void testPatch() {
-	final LongDiff diff = new LongDiff(3, 9);
+	final NumberDiff<Long> diff = new NumberDiff<Long>(3l, 9l);
 	Long patched = null;
 
 	try {
@@ -34,7 +34,7 @@ public class LongDiffTest {
     /**
      */
     public void testRevert() {
-	final LongDiff diff = new LongDiff(5, 7);
+	final NumberDiff<Long> diff = new NumberDiff<Long>(5l, 7l);
 	Long reverted = null;
 
 	try {

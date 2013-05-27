@@ -14,7 +14,7 @@ public class ByteDiffTest {
     /**
      */
     public void testPatch() {
-	final ByteDiff diff = new ByteDiff((byte)3, (byte)9);
+	final NumberDiff<Byte> diff = new NumberDiff<Byte>((byte)3, (byte)9);
 	Byte patched = null;
 
 	try {
@@ -34,7 +34,7 @@ public class ByteDiffTest {
     /**
      */
     public void testRevert() {
-	final ByteDiff diff = new ByteDiff((byte)5, (byte)7);
+	final NumberDiff<Byte> diff = new NumberDiff<Byte>((byte)5, (byte)7);
 	Byte reverted = null;
 
 	try {

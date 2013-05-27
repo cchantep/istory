@@ -15,7 +15,8 @@ public class ShortDiffTest extends TestCase {
     /**
      */
     public void testPatch() {
-	ShortDiff diff = new ShortDiff((short)3, (short)9);
+	final NumberDiff<Short> diff = 
+            new NumberDiff<Short>((short)3, (short)9);
 
 	Short patched = null;
 
@@ -36,7 +37,8 @@ public class ShortDiffTest extends TestCase {
     /**
      */
     public void testRevert() {
-	ShortDiff diff = new ShortDiff((short)5, (short)7);
+	final NumberDiff<Short> diff = 
+            new NumberDiff<Short>((short)5, (short)7);
 
 	Short reverted = null;
 

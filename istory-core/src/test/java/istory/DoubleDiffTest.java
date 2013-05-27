@@ -14,7 +14,7 @@ public class DoubleDiffTest {
     /**
      */
     public void testPatch() {
-	final DoubleDiff diff = new DoubleDiff(3, 9);
+	final NumberDiff<Double> diff = new NumberDiff<Double>(3d, 9d);
 	Double patched = null;
 
 	try {
@@ -34,7 +34,7 @@ public class DoubleDiffTest {
     /**
      */
     public void testRevert() {
-	final DoubleDiff diff = new DoubleDiff(5, 7);
+	final NumberDiff<Double> diff = new NumberDiff<Double>(5d, 7d);
 	Double reverted = null;
 
 	try {

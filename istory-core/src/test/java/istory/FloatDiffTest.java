@@ -14,7 +14,7 @@ public class FloatDiffTest {
     /**
      */
     public void testPatch() {
-	final FloatDiff diff = new FloatDiff(3f, 9f);
+	final NumberDiff<Float> diff = new NumberDiff<Float>(3f, 9f);
 	Float patched = null;
 
 	try {
@@ -34,7 +34,7 @@ public class FloatDiffTest {
     /**
      */
     public void testRevert() {
-	final FloatDiff diff = new FloatDiff(5f, 7f);
+	final NumberDiff<Float> diff = new NumberDiff<Float>(5f, 7f);
 	Float reverted = null;
 
 	try {

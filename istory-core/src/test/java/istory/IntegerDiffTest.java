@@ -14,7 +14,7 @@ public class IntegerDiffTest {
     /**
      */
     public void testPatch() {
-	final IntegerDiff diff = new IntegerDiff(3, 9);
+	final NumberDiff<Integer> diff = new NumberDiff<Integer>(3, 9);
 	Integer patched = null;
 
 	try {
@@ -34,7 +34,7 @@ public class IntegerDiffTest {
     /**
      */
     public void testRevert() {
-	final IntegerDiff diff = new IntegerDiff(5, 7);
+	final NumberDiff<Integer> diff = new NumberDiff<Integer>(5, 7);
 	Integer reverted = null;
 
 	try {
