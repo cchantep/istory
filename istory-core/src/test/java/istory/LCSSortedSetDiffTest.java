@@ -1,6 +1,7 @@
 package istory;
 
 import java.util.Comparator;
+import java.util.Collection;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Arrays;
@@ -14,7 +15,7 @@ import istory.DiffException;
 /**
  * Diff for sorted set test
  *
- * @author Cedric Chantepie ()
+ * @author Cedric Chantepie
  */
 public class LCSSortedSetDiffTest extends TestCase {
     static final Comparator<? super Character> rcharComp = 
@@ -70,10 +71,10 @@ public class LCSSortedSetDiffTest extends TestCase {
     /**
      */
     private <T> void tuPatch(final SortedSet<T> orig, final SortedSet<T> dest) {
-	final LCSSortedSetDiff<T> diff = 
-	    new LCSSortedSetDiff<T>(orig, dest);
+	final LCSCollectionDiff<T> diff = 
+	    new LCSCollectionDiff<T>(orig, dest);
 
-	SortedSet<T> patched = null;
+	Collection<T> patched = null;
 
 	try {
 	    patched = diff.patch(orig);
@@ -131,10 +132,10 @@ public class LCSSortedSetDiffTest extends TestCase {
     private <T> void tuRevert(final SortedSet<T> orig, 
                               final SortedSet<T> dest) {
 
-	final LCSSortedSetDiff<T> diff = 
-	    new LCSSortedSetDiff<T>(orig, dest);
+	final LCSCollectionDiff<T> diff = 
+	    new LCSCollectionDiff<T>(orig, dest);
 
-	SortedSet<T> reverted = null;
+	Collection<T> reverted = null;
 
 	try {
 	    reverted = diff.revert(dest);

@@ -3,7 +3,10 @@ package istory;
 import java.io.Serializable;
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.ArrayList;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -129,7 +132,7 @@ public class LCSCollectionDiff<E>
      * {@inheritDoc}
      */
     public synchronized <V extends Collection<E>> Collection<E> patch(final V orig) throws DiffException {
-
+            
             if (this.added == null) {
                 processLcs();
                 processDifferences();
@@ -191,7 +194,17 @@ public class LCSCollectionDiff<E>
      */
     protected <V extends Collection<E>> Changeable<Collection<E>,E> createChangeable(V value) throws DiffException {
 
-        return new ChangeableCollection();
+        if (!(value instanceof SortedSet)) {
+            return new ChangeableCollection();
+        } else {
+            @SuppressWarnings("unchecked")
+            final Comparator<? super E> c = ((SortedSet) value).comparator();
+            
+            return (c == null) 
+                ? new ChangeableSortedSet()
+                :  new ChangeableSortedSet(c);
+
+        } // end of else
     } // end of createChangeable
 
     /**
@@ -333,4 +346,59 @@ public class LCSCollectionDiff<E>
 
             } // end of insertChange
     } // end of class ChangeableCollection
+
+    /**
+     * Working object representing sorted set on which change can be applied.
+     *
+     * @param E Type of set element
+     * @author Cedric Chantepie
+     * @see SortedSetChange
+     */
+    protected class ChangeableSortedSet extends Changeable<Collection<E>,E> {
+	// --- Properties ---
+
+	/**
+	 * Value we are working on
+	 */
+	private final TreeSet<E> value;
+
+	// --- Constructors ---
+
+	/**
+	 * Bulk constructor.
+	 */
+	public ChangeableSortedSet() {
+	    this.value = new TreeSet<E>();
+	} // end of <init>
+
+	/**
+	 * Comparator constructor.
+	 */
+	public ChangeableSortedSet(final Comparator<? super E> comparator) {
+	    this.value = new TreeSet<E>(comparator);
+	} // end of <init>
+
+	// --- Properties accessors ---
+
+	/**
+	 * Returns value with current changes.
+	 */
+	public SortedSet<E> getValue() {
+	    return this.value;
+	} // end of getValue
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public synchronized <V extends E> void append(V element) {
+	    this.value.add(element);
+	} // end of append
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public synchronized void insertChange(final Change<Collection<E>,E> change) {
+                this.value.addAll(change.getValue());
+	} // end of insertChange
+    } // end of class ChangeableSortedSet
 } // end of class LCSCollectionDiff
