@@ -12,8 +12,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import org.apache.commons.lang3.Range;
 
-import istory.DiffException;
-import istory.Diff;
 
 /**
  * Diff based on LCS algorithm.
@@ -197,7 +195,11 @@ public abstract class AbstractLCSDiff<C,E> implements Diff<C> {
 	jj = m;
 	int pos = S[ii][jj] - 1;
 
-	this.lcs = new ArrayList<CommonElement<E>>(pos+1);
+	this.lcs = new ArrayList<CommonElement<E>>();
+
+        for (int i = 0; i < pos+1; i++) {
+            this.lcs.add(null);
+        } // end of for
 
 	// Trace the backtracking matrix.
 	while (ii > 0 || jj > 0) {
@@ -205,7 +207,7 @@ public abstract class AbstractLCSDiff<C,E> implements Diff<C> {
 		ii--;
 		jj--;
 
-		this.lcs.add(pos--,
+		this.lcs.set(pos--,
                              new CommonElement<E>(this.originalElementAt(ii), 
                                                   ii, jj));
 
@@ -235,8 +237,8 @@ public abstract class AbstractLCSDiff<C,E> implements Diff<C> {
      * to be able to patch and revert
      *
      * @see #processLcs()
-     * @see #patch(java.lang.Object)
-     * @see #revert(java.lang.Object)
+     * @see #patch
+     * @see #revert
      */
     protected void processDifferences() {
 	if (this.lcs == null) {
@@ -249,8 +251,8 @@ public abstract class AbstractLCSDiff<C,E> implements Diff<C> {
 
 	int len = this.originalSize();
 	int c = 0;
-	int idx = (this.lcs.isEmpty()) ? -1
-	    : this.lcs.get(c).getOriginalIndex();
+	int idx = (this.lcs.isEmpty()) ? -1 
+            : this.lcs.get(c).getOriginalIndex();
 
 	int last = -1;
 	Range<Integer> r = null;
@@ -655,11 +657,9 @@ public abstract class AbstractLCSDiff<C,E> implements Diff<C> {
 	 * {@inheritDoc}
 	 */
 	public String toString() {
-	    return new ToStringBuilder(this).
-		append("value", this.value).
-		append("originalIndex", this.origIndex).
-		append("destinationIndex", this.destIndex).
-		toString();
+            return String.
+                format("CommonElement(%s, %s, %s)",
+                       this.value, this.origIndex, this.destIndex);
 
 	} // end of toString
     } // end of class CommonElement

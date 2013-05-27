@@ -2,7 +2,6 @@ package istory;
 
 import java.io.Serializable;
 
-import java.util.Collections;
 import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,8 +15,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import org.apache.commons.lang3.Range;
-
-import istory.DiffException;
 
 /**
  * Diff implementation for Collection (and arrays), excepted Set,
@@ -194,7 +191,7 @@ public class LCSCollectionDiff<E>
      */
     protected <V extends Collection<E>> Changeable<Collection<E>,E> createChangeable(V value) throws DiffException {
 
-        return new ChangeableCollection<E>();
+        return new ChangeableCollection();
     } // end of createChangeable
 
     /**
@@ -288,11 +285,12 @@ public class LCSCollectionDiff<E>
      * Working object representing Collection value 
      * on which change can be applied.
      *
-     * @param E Type of collection element
+     * @param I Type of collection element
      * @author Cedric Chantepie
      * @see CollectionChange
      */
-    protected class ChangeableCollection<E> extends Changeable<Collection<E>,E> {
+    protected class ChangeableCollection extends Changeable<Collection<E>,E> {
+
         // --- Properties ---
 
         /**

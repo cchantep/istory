@@ -3,10 +3,8 @@ package istory;
 import java.io.Serializable;
 
 import java.util.Comparator;
-import java.util.ArrayList;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.Validate;
@@ -16,8 +14,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import org.apache.commons.lang3.Range;
-
-import istory.DiffException;
 
 /**
  * Diff implementation for sorted set using LCS algorithm. 
@@ -176,8 +172,8 @@ public class LCSSortedMapDiff<K,V>
         final Comparator<? super K> c = value.comparator();
 
         return (c == null)
-            ? new ChangeableSortedMap<K,V>()
-            : new ChangeableSortedMap<K,V>(c);
+            ? new ChangeableSortedMap()
+            : new ChangeableSortedMap(c);
 
     } // end of createChangeable
 
@@ -285,7 +281,7 @@ public class LCSSortedMapDiff<K,V>
      * @author Cedric Chantepie
      * @see SortedMapChange
      */
-    protected class ChangeableSortedMap<K,V> 
+    protected class ChangeableSortedMap 
         extends Changeable<SortedMap<K,V>, Map.Entry<K,V>> {
 
         // --- Properties ---
@@ -331,7 +327,7 @@ public class LCSSortedMapDiff<K,V>
          * {@inheritDoc}
          */
         public synchronized void insertChange(Change<SortedMap<K,V>, Map.Entry<K,V>> change) {
-
+                
                 this.value.putAll(change.getValue());
             } // end of insertChange
     } // end of class ChangeableSortedMap
