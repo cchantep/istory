@@ -12,7 +12,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import org.apache.commons.lang3.Range;
 
-
 /**
  * Diff based on LCS algorithm.
  * Inspired from http://www.bioalgorithms.info/downloads/code/LCS.java

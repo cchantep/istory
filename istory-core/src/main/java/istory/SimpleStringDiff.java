@@ -2,7 +2,6 @@ package istory;
 
 import java.io.Serializable;
 
-
 /**
  * Diff for String.
  *
@@ -29,9 +28,7 @@ public class SimpleStringDiff implements Diff<String>, Serializable {
      * @param oldValue 
      * @param newValue
      */
-    public SimpleStringDiff(final String oldValue, 
-			    final String newValue) {
-
+    public SimpleStringDiff(final String oldValue, final String newValue) {
 	this.oldValue = oldValue;
 	this.newValue = newValue;
     } // end of if
