@@ -48,8 +48,8 @@ public class LCSSortedMapDiff<K,V>
      * @param original Original sorted set
      * @param destination Destination sorted set
      */
-    public LCSSortedMapDiff(SortedMap<K,V> original,
-                            SortedMap<K,V> destination) {
+    public LCSSortedMapDiff(final SortedMap<K,V> original,
+                            final SortedMap<K,V> destination) {
 
         super();
 

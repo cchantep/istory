@@ -13,7 +13,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-
 /**
  * Diff implementation for (unsorted) Set.
  * Collection can be accepted, in order to be diffed without ordering 
