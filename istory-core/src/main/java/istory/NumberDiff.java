@@ -2,26 +2,23 @@ package istory;
 
 import java.io.Serializable;
 
-import istory.DiffException;
-import istory.Diff;
-
 /**
- * Diff for double.
+ * Diff for integer.
  *
  * @author Cedric Chantepie
  */
-public class DoubleDiff implements Diff<Double>, Serializable {
+public class NumberDiff<N extends Number> implements Diff<N>, Serializable {
     // --- Properties ---
 
     /**
      * Old value
      */
-    private final double oldValue;
+    private final N oldValue;
 
     /**
      * New value
      */
-    private final double newValue;
+    private final N newValue;
 
     // --- Constructors ---
 
@@ -31,7 +28,7 @@ public class DoubleDiff implements Diff<Double>, Serializable {
      * @param oldValue 
      * @param newValue
      */
-    public DoubleDiff(final double oldValue, final double newValue) {
+    public NumberDiff(final N oldValue, final N newValue) {
 	this.oldValue = oldValue;
 	this.newValue = newValue;
     } // end of if
@@ -41,8 +38,8 @@ public class DoubleDiff implements Diff<Double>, Serializable {
     /**
      * {@inheritDoc}
      */
-    public <V extends Double> Double patch(final V orig) throws DiffException {
-	if (orig.doubleValue() != oldValue) {
+    public <V extends N> N patch(final V orig) throws DiffException {
+        if (!oldValue.equals(orig)) {
 	    throw new DiffException();
 	} // end of if
 
@@ -52,11 +49,11 @@ public class DoubleDiff implements Diff<Double>, Serializable {
     /**
      * {@inheritDoc}
      */
-    public <V extends Double> Double revert(final V dest) throws DiffException {
-	if (dest.doubleValue() != newValue) {
+    public <V extends N> N revert(final V dest) throws DiffException {
+	if (!dest.equals(newValue)) {
 	    throw new DiffException();
 	} // end of if
 
-	return this.oldValue;	
+	return this.oldValue;
     } // end of revert
-} // end of class DoubleDiff
+} // end of class NumberDiff
