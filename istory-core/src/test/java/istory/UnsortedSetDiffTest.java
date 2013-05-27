@@ -1,6 +1,5 @@
 package istory;
 
-import java.util.Collection;
 import java.util.TreeSet;
 import java.util.HashSet;
 import java.util.Arrays;

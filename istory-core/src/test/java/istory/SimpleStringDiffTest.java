@@ -16,9 +16,7 @@ public class SimpleStringDiffTest {
     public void testPatch() {
 	final String orig = "sdfjezrujdmdgkmdlfg sdf";
 	final String dest = "sdflizer dfserizoper vf";
-
-	final SimpleStringDiff diff = 
-	    new SimpleStringDiff(orig, dest);
+	final SimpleStringDiff diff = new SimpleStringDiff(orig, dest);
 
 	String patched = null;
 
@@ -41,9 +39,7 @@ public class SimpleStringDiffTest {
     public void testRevert() {
 	final String orig = "dfgmsdlkf sdferzepr dfg";
 	final String dest = "drgler dfgzerzedfsdfjk";
-
-	final SimpleStringDiff diff = 
-	    new SimpleStringDiff(orig, dest);
+	final SimpleStringDiff diff = new SimpleStringDiff(orig, dest);
 
 	String reverted = null;
 

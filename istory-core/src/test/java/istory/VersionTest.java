@@ -4,15 +4,14 @@ import java.util.GregorianCalendar;
 import java.util.Calendar;
 import java.util.Arrays;
 
-import junit.framework.TestCase;
-import junit.framework.Test;
+import static org.junit.Assert.*;
 
 /**
  * Version POJO test case.
  *
- * @author Cedric Chantepie ()
+ * @author Cedric Chantepie
  */
-public class VersionTest extends TestCase {
+public class VersionTest {
 
     /**
      */
@@ -117,5 +116,4 @@ public class VersionTest extends TestCase {
 		   v2.hashCode() == other.hashCode());
 
     } // end of tuEquals
-
 } // end of class VersionTest
