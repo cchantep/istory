@@ -1,3 +1,3 @@
-# iStore
+# iStory
 
 Versioning/history framework.
