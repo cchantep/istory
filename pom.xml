@@ -23,8 +23,7 @@
   </scm>
 
   <modules>
-    <module>istory-core</module>
-    <module>istory-persistence</module>
+    <module>core</module>
   </modules>
 
   <properties>
