@@ -2,8 +2,6 @@ package istory;
 
 import java.io.Serializable;
 
-import istory.DiffException;
-import istory.Diff;
 
 /**
  * Diff for String.

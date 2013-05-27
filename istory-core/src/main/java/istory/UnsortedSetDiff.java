@@ -13,8 +13,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-import istory.DiffException;
-import istory.Diff;
 
 /**
  * Diff implementation for (unsorted) Set.
