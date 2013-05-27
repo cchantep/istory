@@ -3,30 +3,28 @@ package istory;
 /**
  * Set of changes and modifications.
  *
- * @author Cedric Chantepie ()
+ * @author Cedric Chantepie
  */
-public interface Diff {
+public interface Diff<T> {
 
     /**
-     * Apply modifications to given |orig|inal object.
+     * Apply modifications to given |original| object.
      *
-     * @param orig Object to be patched
+     * @param original Object to be patched
      * @return A patched object
-     * @throws DiffException if |orig| cannot be patched
-     * @see revert(java.lang.Object)
+     * @throws DiffException if |original| cannot be patched
+     * @see #revert
      */
-    public Object patch(Object orig) 
-	throws DiffException;
+    public <V extends T> T patch(V original) throws DiffException;
 
     /**
-     * Revert modifications from given |dest|ination object.
+     * Revert modifications from given |destination| object.
      *
-     * @param dest Object to be reverted
-     * @return Orginal object
-     * @throws DiffException if |dest| cannot be reverted
-     * @see patch(java.lang.Object)
+     * @param destination Object to be reverted
+     * @return Original object
+     * @throws DiffException if |destination| cannot be reverted
+     * @see #patch
      */
-    public Object revert(Object dest)
-	throws DiffException;
+    public <V extends T> T revert(V destination) throws DiffException;
 
 } // end of class Diff

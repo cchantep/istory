@@ -6,16 +6,16 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Arrays;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
-import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 
-import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 
 /** 
  * Version state extracted from an history.
  *
- * @author Cedric Chantepie ()
+ * @author Cedric Chantepie
  * @see istory.VersionHistory
  */
 public class Version implements Serializable {
@@ -24,40 +24,34 @@ public class Version implements Serializable {
     /**
      * Entity identifier
      */
-    protected String id = null;
+    protected final String id;
 
     /**
      * Version name
      */
-    protected String name = null;
+    protected final String name;
 
     /**
      * Identifier of containing history.
      */
-    protected String historyId = null;
+    protected final String historyId;
 
     /**
      * Creation time
      */
-    protected Calendar created = null;
+    protected final Calendar created;
 
     /**
      * Names of predecessors
      */
-    protected HashSet predecessorNames = null;
+    protected final HashSet<String> predecessorNames;
 
     /**
      * Names of successors
      */
-    protected HashSet successorNames = null;
+    protected final HashSet<String> successorNames;
 
     // --- Constructors ---
-
-    /**
-     * No-arg constructor.
-     */
-    private Version() {
-    } // end of <init>
 
     /**
      * Bulk constructor
@@ -69,31 +63,28 @@ public class Version implements Serializable {
      * @param predecessorNames Names or predecessors in history
      * @param successorNames Names of successors in history
      */
-    public Version(String id,
-		   String historyId,
-		   Calendar created,
-		   String name,
-		   String[] predecessorNames,
-		   String[] successorNames) {
+    public Version(final String id,
+		   final String historyId,
+		   final Calendar created,
+		   final String name,
+		   final String[] predecessorNames,
+		   final String[] successorNames) {
 
 	this.id = id;
 	this.historyId = historyId;
 	this.created = created;
 	this.name = name;
 
-	if (predecessorNames != null) {
-	    this.predecessorNames = 
-		new HashSet(Arrays.
-			    asList(predecessorNames));
+        this.predecessorNames = (predecessorNames != null)
+            ? new HashSet<String>(Arrays.asList(predecessorNames))
+            : new HashSet<String>();
 
-	} // end of if
 
-	if (successorNames != null) {
-	    this.successorNames = 
-		new HashSet(Arrays.
-			    asList(successorNames));
 
-	} // end of if
+        this.successorNames = (successorNames != null)
+            ? new HashSet<String>(Arrays.asList(successorNames))
+            : new HashSet<String>();
+
     } // end of <init>
 
     // --- Properties accessors ---
@@ -107,32 +98,32 @@ public class Version implements Serializable {
 
     /** 
      * Returns name of successor states.
-     * @see #getSuccessorNames()
-     * @see #getName()
+     * @see #getSuccessorNames
+     * @see #getName
      */
     public String[] getPredecessorNames() {
-	if (predecessorNames == null) {
+        final int len = predecessorNames.size();
+
+	if (predecessorNames == null || len == 0) {
 	    return new String[0];
 	} // end of if
 
-	return (String[]) predecessorNames.
-	    toArray(new String[predecessorNames.size()]);
-
+        return predecessorNames.toArray(new String[len]);
     } // end of getPredecessorNames
 
     /** 
      * Returns names of successor states.
-     * @see #getPredecessorNames()
-     * @see #getName()
+     * @see #getPredecessorNames
+     * @see #getName
      */
     public String[] getSuccessorNames() {
+        final int len = successorNames.size();
+
 	if (successorNames == null) {
 	    return new String[0];
 	} // end of if
 
-	return (String[]) successorNames.
-	    toArray(new String[successorNames.size()]);
-
+	return successorNames.toArray(new String[len]);
     } // end of getSuccessorNames
 
     /** 
@@ -167,7 +158,7 @@ public class Version implements Serializable {
 	    return false;
 	} // end of if
 
-	Version other = (Version) o;
+	final Version other = (Version) o;
 
 	return new EqualsBuilder().
 	    append(this.id, other.id).
@@ -201,14 +192,9 @@ public class Version implements Serializable {
      * {@inheritDoc}
      */
     public String toString() {
-	String createdStr = null;
-
-	if (this.created != null) {
-	    createdStr = 
-		DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.
-		format(this.created);
-
-	} // end of if
+	final String createdStr = (this.created == null) ? null
+            : DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.
+            format(this.created);
 
 	return new ToStringBuilder(this).
 	    append("id", this.id).
@@ -218,5 +204,4 @@ public class Version implements Serializable {
 	    toString();
 
     } // end of toString
-
 } // end of class Version
