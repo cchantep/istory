@@ -10,7 +10,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import org.apache.commons.lang3.Range;
 
-
 /**
  * Diff implementation for char sequence using LCS algorithm.
  *
@@ -18,18 +17,6 @@ import org.apache.commons.lang3.Range;
  */
 public class LCSCharSequenceDiff 
     extends AbstractLCSDiff<CharSequence,Character> implements Serializable {
-
-    // --- Properties ---
-
-    /**
-     * Original string
-     */
-    private final CharSequence orig;
-
-    /**
-     * Destination string
-     */
-    private final CharSequence dest;
 
     // --- Constructors ---
 
@@ -47,8 +34,8 @@ public class LCSCharSequenceDiff
         Validate.notNull(original, "Null original string");
         Validate.notNull(destination, "Null destination string");
 
-        this.orig = original;
-        this.dest = destination;
+        processLcs(original, destination);
+        processDifferences(original, destination);
     } // end of <init>
 
     /**
@@ -68,16 +55,14 @@ public class LCSCharSequenceDiff
     /**
      * {@inheritDoc}
      */
-    protected <V extends CharSequence> int count(V value) {
+    protected int count(final CharSequence value) {
         return value.length();
     } // end of count
 
     /**
      * {@inheritDoc}
      */
-    protected <V extends CharSequence> Character elementAt(final V value, 
-                                                           final int index) {
-
+    protected Character elementAt(final CharSequence value, final int index) {
         Validate.notNull(value, "Null value");
         Validate.isTrue(index >= 0, "Index less than 0");
 
@@ -94,11 +79,6 @@ public class LCSCharSequenceDiff
      */
     public synchronized <V extends CharSequence> CharSequence patch(final V orig) throws DiffException {
 
-            if (this.added == null) {
-                processLcs();
-                processDifferences();
-            } // end of if
-
             return super.patch(orig);
         } // end of patch
 
@@ -107,53 +87,21 @@ public class LCSCharSequenceDiff
      */
     public synchronized <V extends CharSequence> CharSequence revert(final V dest) throws DiffException {
 
-            if (this.removed == null) {
-                processLcs();
-                processDifferences();
-            } // end of if
-
             return super.revert(dest);
         } // end of revert
 
     /**
      * {@inheritDoc}
      */
-    protected int originalSize() {
-        return this.orig.length();
-    } // end of originalSize
+    protected Change<CharSequence,Character> createChange(final CharSequence original, final Range<Integer> range) {
 
-    /**
-     * {@inheritDoc}
-     */
-    protected int destinationSize() {
-        return this.dest.length();
-    } // end of originalSize
-
-    /**
-     * {@inheritDoc}
-     */
-    protected Character originalElementAt(int index) {
-        return this.orig.charAt(index);
-    } // end of originalSize
-
-    /**
-     * {@inheritDoc}
-     */
-    protected Character destinationElementAt(int index) {
-        return this.dest.charAt(index);
-    } // end of originalSize
-
-    /**
-     * {@inheritDoc}
-     */
-    protected Change<CharSequence,Character> createChange(final Range<Integer> range) {
         return new CharSequenceChange(range);
     } // end of originalSize
 
     /**
      * {@inheritDoc}
      */
-    protected <V extends CharSequence> Changeable<CharSequence,Character> createChangeable(final V value) throws DiffException {
+    protected Changeable<CharSequence,Character> createChangeable(final CharSequence container) throws DiffException {
 
         return new ChangeableCharSequence();
     } // end of createChangeable
@@ -170,8 +118,6 @@ public class LCSCharSequenceDiff
 
         return new EqualsBuilder().
             appendSuper(super.equals(other)).
-            append(this.orig, other.orig).
-            append(this.dest, other.dest).
             isEquals();
 
     } // end of equals
@@ -182,8 +128,6 @@ public class LCSCharSequenceDiff
     public int hashCode() {
         return new HashCodeBuilder(27, 29).
             appendSuper(super.hashCode()).
-            append(this.orig).
-            append(this.dest).
             toHashCode();
 
     } // end of hashCode
@@ -194,8 +138,6 @@ public class LCSCharSequenceDiff
     public String toString() {
         return new ToStringBuilder(this).
             appendSuper(super.toString()).
-            append("original", this.orig).
-            append("destination", this.dest).
             toString();
 
     } // end of toString

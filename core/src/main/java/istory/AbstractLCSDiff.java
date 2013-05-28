@@ -52,7 +52,7 @@ public abstract class AbstractLCSDiff<C,E> implements Diff<C> {
     /**
      * Longest common subsequence
      */
-    private ArrayList<CommonElement<E>> lcs = null;
+    protected ArrayList<CommonElement<E>> lcs = null;
 
     /**
      * Changes from lcs to original,
@@ -69,34 +69,11 @@ public abstract class AbstractLCSDiff<C,E> implements Diff<C> {
     // ---
 
     /**
-     * Returns the number of element in original (first) container.
-     *
-     * @see #destinationSize
-     */
-    protected abstract int originalSize();
-
-    /**
-     * Returns the number of element in destination (second) container.
-     *
-     * @see #originalSize
-     */
-    protected abstract int destinationSize();
-
-    /**
-     * Returns the element at |index| in original container.
+     * Returns the element at |index| in |container|.
      *
      * @param index Index in original container
-     * @see #destinationElementAt(int)
      */
-    protected abstract E originalElementAt(int index);
-
-    /**
-     * Returns the element at |index| in destination container.
-     *
-     * @param index Index in destination container
-     * @see #originalElementAt(int)
-     */
-    protected abstract E destinationElementAt(int index);
+    protected abstract E elementAt(C container, int index);
 
     /**
      * Returns true if element |a| and element |b| are equals.
@@ -123,10 +100,10 @@ public abstract class AbstractLCSDiff<C,E> implements Diff<C> {
      * @see #patch
      * @see #revert
      */
-    protected void processLcs() {
+    protected void processLcs(final C original, final C destination) {
 	// size
-	final int n = originalSize();
-	final int m = destinationSize();
+	final int n = count(original);
+	final int m = count(destination);
 
 	// checkerboards
 	final int S[][] = new int[n+1][m+1];
@@ -153,10 +130,10 @@ public abstract class AbstractLCSDiff<C,E> implements Diff<C> {
 	E a;
 	E b;
 	for (ii = 1; ii <= n; ++ii) {
-	    a = this.originalElementAt(ii-1);
+	    a = this.elementAt(original, ii-1);
 
 	    for (jj = 1; jj <= m; ++jj) { 
-		b = this.destinationElementAt(jj-1);
+		b = this.elementAt(destination, jj-1);
 
 		if (this.areEquals(a, b)) { // common
 		    // 1 more to the score
@@ -207,7 +184,7 @@ public abstract class AbstractLCSDiff<C,E> implements Diff<C> {
 		jj--;
 
 		this.lcs.set(pos--,
-                             new CommonElement<E>(this.originalElementAt(ii), 
+                             new CommonElement<E>(this.elementAt(original, ii), 
                                                   ii, jj));
 
 		continue; 
@@ -224,9 +201,11 @@ public abstract class AbstractLCSDiff<C,E> implements Diff<C> {
     /**
      * Create a change instance.
      *
+     * @param container 
      * @param range Initial change range
      */
-    protected abstract Change<C,E> createChange(Range<Integer> range);
+    protected abstract Change<C,E> createChange(C container, 
+                                                Range<Integer> range);
 
     /**
      * Process original and destination according lcs, 
@@ -239,7 +218,7 @@ public abstract class AbstractLCSDiff<C,E> implements Diff<C> {
      * @see #patch
      * @see #revert
      */
-    protected void processDifferences() {
+    protected void processDifferences(final C original, final C destination) {
 	if (this.lcs == null) {
 	    throw new IllegalStateException("Should have called " +
 					    "processLcs before");
@@ -248,7 +227,7 @@ public abstract class AbstractLCSDiff<C,E> implements Diff<C> {
 
 	this.removed = new ArrayList<Change<C,E>>();
 
-	int len = this.originalSize();
+	int len = count(original);
 	int c = 0;
 	int idx = (this.lcs.isEmpty()) ? -1 
             : this.lcs.get(c).getOriginalIndex();
@@ -276,14 +255,14 @@ public abstract class AbstractLCSDiff<C,E> implements Diff<C> {
 	    } // end of
 
 	    if (change == null) { // new range
-		change = this.createChange(r = Range.between(i, i));
+		change = this.createChange(original, r = Range.between(i, i));
 	    } else { // complete range
 		r = Range.between(r.getMinimum(), i);
 
 		change.setIndexRange(r);
 	    } // end of else
 
-	    change.appendItem(this.originalElementAt(i));
+	    change.appendItem(this.elementAt(original, i));
 
 	    last = i;
 	} // end of for
@@ -296,7 +275,7 @@ public abstract class AbstractLCSDiff<C,E> implements Diff<C> {
 
 	this.added = new ArrayList<Change<C,E>>();
 
-	len = this.destinationSize();
+	len = count(destination);
 	c = 0;
 	idx = (this.lcs.isEmpty()) ? -1
 	    : this.lcs.get(c).getDestinationIndex();
@@ -324,14 +303,16 @@ public abstract class AbstractLCSDiff<C,E> implements Diff<C> {
 	    } // end of
 
 	    if (r == null) { // new range
-		change = this.createChange(r = Range.between(i, i));
+		change = this.createChange(destination, 
+                                           r = Range.between(i, i));
+
 	    } else { // complete range
                 r = Range.between(r.getMinimum(), i);
 
 		change.setIndexRange(r);
 	    } // end of else
 
-	    change.appendItem(this.destinationElementAt(i));
+	    change.appendItem(this.elementAt(destination, i));
 
 	    last = i;
 	} // end of for
@@ -348,23 +329,15 @@ public abstract class AbstractLCSDiff<C,E> implements Diff<C> {
      *
      * @param value Base value to be patched or reverted
      */
-    protected abstract <V extends C> Changeable<C,E> createChangeable(V value)
+    protected abstract Changeable<C,E> createChangeable(C value)
 	throws DiffException;
 
     /**
-     * Returns element at |index| in |value|.
+     * Returns number of elements in |container|.
      *
-     * @param value Value in which element is search at |index|
-     * @param index Expected index of element to returned in |value|
+     * @param container Counted value
      */
-    protected abstract <V extends C> E elementAt(V value, int index);
-
-    /**
-     * Returns number of elements in |value|.
-     *
-     * @param value Counted value
-     */
-    protected abstract <V extends C> int count(V value);
+    protected abstract int count(C container);
 
     /**
      * {@inheritDoc}

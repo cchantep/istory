@@ -28,18 +28,6 @@ public class LCSSortedMapDiff<K,V>
     extends AbstractLCSDiff<SortedMap<K,V>, Map.Entry<K,V>> 
     implements Serializable {
 
-    // --- Properties ---
-
-    /**
-     * Original element sorted set
-     */
-    private final SortedMap<K,V> orig;
-
-    /**
-     * Destination element sorted set
-     */
-    private final SortedMap<K,V> dest;
-
     // --- Constructors ---
 
     /**
@@ -56,8 +44,8 @@ public class LCSSortedMapDiff<K,V>
         Validate.notNull(original, "Null original sorted set");
         Validate.notNull(destination, "Null destination sorted set");
 
-        this.orig = original;
-        this.dest = destination;
+        processLcs(original, destination);
+        processDifferences(original, destination);
     } // end of <init>
 
     // --- Implementation ---
@@ -65,14 +53,15 @@ public class LCSSortedMapDiff<K,V>
     /**
      * {@inheritDoc}
      */
-    protected <M extends SortedMap<K,V>> int count(final M value) {
+    protected int count(final SortedMap<K,V> value) {
         return value.size();
     } // end of count
 
     /**
      * {@inheritDoc}
      */
-    protected <M extends SortedMap<K,V>> Map.Entry<K,V> elementAt(final M value, final int index) {
+    protected Map.Entry<K,V> elementAt(final SortedMap<K,V> value, 
+                                       final int index) {
 
         Validate.notNull(value, "Null value");
         Validate.isTrue(index >= 0, "Index less than 0");
@@ -95,11 +84,6 @@ public class LCSSortedMapDiff<K,V>
      */
     public synchronized <M extends SortedMap<K,V>> SortedMap<K,V> patch(final M orig) throws DiffException {
 
-            if (this.added == null) {
-                processLcs();
-                processDifferences();
-            } // end of if
-
             return super.patch(orig);
         } // end of patch
 
@@ -108,66 +92,21 @@ public class LCSSortedMapDiff<K,V>
      */
     public synchronized <M extends SortedMap<K,V>> SortedMap<K,V> revert(final M dest) throws DiffException {
 
-            if (this.removed == null) {
-                processLcs();
-                processDifferences();
-            } // end of if
-
             return super.revert(dest);
         } // end of revert
 
     /**
      * {@inheritDoc}
      */
-    protected int originalSize() {
-        return this.orig.size();
+    protected Change<SortedMap<K,V>, Map.Entry<K,V>> createChange(final SortedMap<K,V> original, final Range<Integer> range) {
+
+        return new SortedMapChange<K,V>(range, original.comparator());
     } // end of originalSize
 
     /**
      * {@inheritDoc}
      */
-    protected int destinationSize() {
-        return this.dest.size();
-    } // end of originalSize
-
-    /**
-     * {@inheritDoc}
-     */
-    protected Map.Entry<K,V> originalElementAt(final int index) {
-        final Object[] array = this.orig.entrySet().toArray();
-
-        @SuppressWarnings("unchecked")
-        final Map.Entry<K,V> entry = (Map.Entry<K,V>) array[index];
-
-        return entry;
-    } // end of originalSize
-
-    /**
-     * {@inheritDoc}
-     */
-    protected Map.Entry<K,V> destinationElementAt(final int index) {
-        final Object[] array = this.dest.entrySet().toArray();
-
-        @SuppressWarnings("unchecked")
-        final Map.Entry<K,V> entry = (Map.Entry<K,V>) array[index];
-
-        return entry;
-    } // end of originalSize
-
-    /**
-     * {@inheritDoc}
-     */
-    protected Change<SortedMap<K,V>, Map.Entry<K,V>> createChange(final Range<Integer> range) {
-
-        final Comparator<? super K> c = this.orig.comparator();
-
-        return new SortedMapChange<K,V>(range, c);
-    } // end of originalSize
-
-    /**
-     * {@inheritDoc}
-     */
-    protected <M extends SortedMap<K,V>> Changeable<SortedMap<K,V>, Map.Entry<K,V>> createChangeable(M value) throws DiffException {
+    protected Changeable<SortedMap<K,V>, Map.Entry<K,V>> createChangeable(final SortedMap<K,V> value) throws DiffException {
 
         final Comparator<? super K> c = value.comparator();
 
@@ -189,8 +128,6 @@ public class LCSSortedMapDiff<K,V>
 
         return new EqualsBuilder().
             appendSuper(super.equals(other)).
-            append(this.orig, other.orig).
-            append(this.dest, other.dest).
             isEquals();
 
     } // end of equals
@@ -201,8 +138,6 @@ public class LCSSortedMapDiff<K,V>
     public int hashCode() {
         return new HashCodeBuilder(33, 35).
             appendSuper(super.hashCode()).
-            append(this.orig).
-            append(this.dest).
             toHashCode();
 
     } // end of hashCode
@@ -213,8 +148,6 @@ public class LCSSortedMapDiff<K,V>
     public String toString() {
         return new ToStringBuilder(this).
             appendSuper(super.toString()).
-            append("original", this.orig).
-            append("destination", this.dest).
             toString();
 
     } // end of toString

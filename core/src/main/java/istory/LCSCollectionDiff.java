@@ -32,18 +32,6 @@ import org.apache.commons.lang3.Range;
 public class LCSCollectionDiff<E> 
     extends AbstractLCSDiff<Collection<E>,E> implements Serializable {
 
-    // --- Properties ---
-
-    /**
-     * Original elements
-     */
-    private final List<E> orig;
-
-    /**
-     * Destination elements
-     */
-    private final List<E> dest;
-
     // --- Constructors ---
 
     /**
@@ -60,8 +48,8 @@ public class LCSCollectionDiff<E>
         Validate.notNull(original, "Null original collection");
         Validate.notNull(destination, "Null destination collection");
 
-        this.orig = new ArrayList<E>(original);
-        this.dest = new ArrayList<E>(destination);
+        processLcs(original, destination);
+        processDifferences(original, destination);
     } // end of <init>
 
     /**
@@ -76,8 +64,11 @@ public class LCSCollectionDiff<E>
         Validate.notNull(original, "Null original array");
         Validate.notNull(destination, "Null destination array");
 
-        this.orig = Arrays.asList(original);
-        this.dest = Arrays.asList(destination);
+        final List<E> origList = Arrays.asList(original);
+        final List<E> destList = Arrays.asList(destination);
+
+        processLcs(origList, destList);
+        processDifferences(origList, destList);
     } // end of <init>
 
     // --- Implementation ---
@@ -85,14 +76,14 @@ public class LCSCollectionDiff<E>
     /**
      * {@inheritDoc}
      */
-    protected <V extends Collection<E>> int count(final V value) {
-        return value.size();
+    protected int count(final Collection<E> container) {
+        return container.size();
     } // end of count
 
     /**
      * {@inheritDoc}
      */
-    protected <V extends Collection<E>> E elementAt(final V value, final int index) {
+    protected E elementAt(final Collection<E> value, final int index) {
         Validate.notNull(value, "Null value");
         Validate.isTrue(index >= 0, "Index less than 0");
         Validate.isTrue(index < value.size(),
@@ -133,11 +124,6 @@ public class LCSCollectionDiff<E>
      */
     public synchronized <V extends Collection<E>> Collection<E> patch(final V orig) throws DiffException {
             
-            if (this.added == null) {
-                processLcs();
-                processDifferences();
-            } // end of if
-
             return super.patch(orig);
         } // end of patch
 
@@ -146,53 +132,21 @@ public class LCSCollectionDiff<E>
      */
     public synchronized <V extends Collection<E>> Collection<E> revert(final V dest) throws DiffException {
 
-            if (this.removed == null) {
-                processLcs();
-                processDifferences();
-            } // end of if
-
             return super.revert(dest);
         } // end of revert
 
     /**
      * {@inheritDoc}
      */
-    protected int originalSize() {
-        return this.orig.size();
-    } // end of originalSize
+    protected Change<Collection<E>,E> createChange(final Collection<E> original, final Range<Integer> range) {
 
-    /**
-     * {@inheritDoc}
-     */
-    protected int destinationSize() {
-        return this.dest.size();
-    } // end of originalSize
-
-    /**
-     * {@inheritDoc}
-     */
-    protected E originalElementAt(final int index) {
-        return this.orig.get(index);
-    } // end of originalSize
-
-    /**
-     * {@inheritDoc}
-     */
-    protected E destinationElementAt(final int index) {
-        return this.dest.get(index);
-    } // end of originalSize
-
-    /**
-     * {@inheritDoc}
-     */
-    protected Change<Collection<E>,E> createChange(final Range<Integer> range) {
         return new CollectionChange<E>(range);
     } // end of originalSize
 
     /**
      * {@inheritDoc}
      */
-    protected <V extends Collection<E>> Changeable<Collection<E>,E> createChangeable(V value) throws DiffException {
+    protected Changeable<Collection<E>,E> createChangeable(Collection<E> value) throws DiffException {
 
         if (!(value instanceof SortedSet)) {
             return new ChangeableCollection();
@@ -210,7 +164,7 @@ public class LCSCollectionDiff<E>
     /**
      * {@inheritDoc}
      */
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (o == null || !(o instanceof LCSCollectionDiff)) {
             return false;
         } // end of if
@@ -219,8 +173,6 @@ public class LCSCollectionDiff<E>
 
         return new EqualsBuilder().
             appendSuper(super.equals(other)).
-            append(this.orig, other.orig).
-            append(this.dest, other.dest).
             isEquals();
 
     } // end of equals
@@ -231,8 +183,6 @@ public class LCSCollectionDiff<E>
     public int hashCode() {
         return new HashCodeBuilder(31, 33).
             appendSuper(super.hashCode()).
-            append(this.orig).
-            append(this.dest).
             toHashCode();
 
     } // end of hashCode
@@ -243,8 +193,6 @@ public class LCSCollectionDiff<E>
     public String toString() {
         return new ToStringBuilder(this).
             appendSuper(super.toString()).
-            append("original", this.orig).
-            append("destination", this.dest).
             toString();
 
     } // end of toString
