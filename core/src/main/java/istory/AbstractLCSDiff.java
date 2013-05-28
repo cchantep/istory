@@ -214,7 +214,7 @@ public abstract class AbstractLCSDiff<C,E> implements Diff<C> {
      * and changes from lcs to destination (added). All this is needed
      * to be able to patch and revert
      *
-     * @see #processLcs()
+     * @see #processLcs
      * @see #patch
      * @see #revert
      */

@@ -16,7 +16,6 @@ import org.apache.commons.lang3.time.DateFormatUtils;
  * Version state extracted from an history.
  *
  * @author Cedric Chantepie
- * @see istory.VersionHistory
  */
 public class Version implements Serializable {
     // --- Properties ---
@@ -135,7 +134,6 @@ public class Version implements Serializable {
   
     /** 
      * Returns unique identifier for history containing this version.
-     * @see istory.VersionHistory
      */
     public String getHistoryId() {
 	return this.historyId;

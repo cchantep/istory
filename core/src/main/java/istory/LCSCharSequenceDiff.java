@@ -160,9 +160,6 @@ public class LCSCharSequenceDiff
 
         // --- Constructors ---
 
-        /**
-         * {@inheritDoc}
-         */
         public CharSequenceChange(final Range<Integer> range) {
             super(range);
         } // end of <init>

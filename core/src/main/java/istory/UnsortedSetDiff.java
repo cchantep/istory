@@ -2,8 +2,6 @@ package istory;
 
 import java.io.Serializable;
 
-import java.util.Collection;
-import java.util.SortedSet;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,9 +19,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
  *
  * @param E Type of set elements
  * @author Cedric Chantepie
- * @see istory.spi.LCSCollectionDiff
- * @see istory.spi.LCSSortedSetDiff
- * @todo Do not keep common
+ * @see LCSCollectionDiff
  */
 public class UnsortedSetDiff<E> implements Diff<Set<E>>, Serializable {
 

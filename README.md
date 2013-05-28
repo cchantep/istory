@@ -2,6 +2,10 @@
 
 Versioning/history framework.
 
+## Documentation
+
+Core documentation can be read [online](http://cchantep.github.io/istory/).
+
 ## Travis CI
 
 [![Build Status](https://secure.travis-ci.org/cchantep/istory.png?branch=master)](http://travis-ci.org/cchantep/istory)

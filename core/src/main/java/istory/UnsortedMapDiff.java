@@ -2,7 +2,6 @@ package istory;
 
 import java.io.Serializable;
 
-import java.util.SortedMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -14,15 +13,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 
-
 /**
  * Diff implementation for (unsorted) Map.
  *
  * @param K Type of map keys
  * @param V Type of map values
  * @author Cedric Chantepie
- * @see istory.spi.LCSSortedMapDiff
- * @todo Do not keep common
+ * @see LCSSortedMapDiff
  */
 public class UnsortedMapDiff<K,V> implements Diff<Map<K,V>>, Serializable {
 

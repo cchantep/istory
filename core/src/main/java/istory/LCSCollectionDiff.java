@@ -9,7 +9,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.lang3.Validate;
 
@@ -20,14 +19,13 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.Range;
 
 /**
- * Diff implementation for Collection (and arrays), excepted Set,
- * using LCS algorithm. Element order is kept, if you want to diff
- * without ordering consideration have a look to LCSSetDiff.
+ * Diff implementation for Collection (and arrays) using LCS algorithm. 
+ * Element order is kept, if you want to diff
+ * without ordering consideration have a look to UnsortedSetDiff.
  *
  * @param E Type of collection elements
  * @author Cedric Chantepie
- * @see istory.spi.LCSSortedSetDiff
- * @see istory.spi.UnsortedSetDiff
+ * @see UnsortedSetDiff
  */
 public class LCSCollectionDiff<E> 
     extends AbstractLCSDiff<Collection<E>,E> implements Serializable {
@@ -216,9 +214,6 @@ public class LCSCollectionDiff<E>
 
         // --- Constructors ---
 
-        /**
-         * {@inheritDoc}
-         */
         public CollectionChange(final Range<Integer> range) {
             super(range);
         } // end of <init>
@@ -300,7 +295,6 @@ public class LCSCollectionDiff<E>
      *
      * @param E Type of set element
      * @author Cedric Chantepie
-     * @see SortedSetChange
      */
     protected class ChangeableSortedSet extends Changeable<Collection<E>,E> {
 	// --- Properties ---

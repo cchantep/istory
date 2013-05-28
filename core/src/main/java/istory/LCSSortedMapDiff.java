@@ -21,8 +21,8 @@ import org.apache.commons.lang3.Range;
  * @param K Type of map keys
  * @param V Type of map values
  * @author Cedric Chantepie
- * @see istory.spi.LCSCollectionDiff
- * @see istory.spi.UnsortedMapDiff
+ * @see LCSCollectionDiff
+ * @see UnsortedMapDiff
  */
 public class LCSSortedMapDiff<K,V> 
     extends AbstractLCSDiff<SortedMap<K,V>, Map.Entry<K,V>> 
@@ -173,9 +173,6 @@ public class LCSSortedMapDiff<K,V>
 
         // --- Constructors ---
 
-        /**
-         * {@inheritDoc}
-         */
         public SortedMapChange(final Range<Integer> range,
                                final Comparator<? super K> comparator) {
 
